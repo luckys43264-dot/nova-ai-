@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova AI - Assistant | Made by Lucky</title>
+    <meta name="description" content="Nova AI - A futuristic Jarvis-style AI Assistant made by Lucky. Voice-powered, multi-persona intelligent assistant.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css?v=2">
+</head>
+<body>
+
+    <!-- Particle Canvas Background -->
+    <canvas id="particleCanvas"></canvas>
+
+    <!-- App Container -->
+    <div class="app-container" id="appContainer">
+
+        <!-- ===== LEFT SIDEBAR ===== -->
+        <aside class="sidebar" id="sidebar">
+
+            <!-- Brand Logo -->
+            <div class="sidebar-brand">
+                <div class="brand-orb">
+                    <div class="brand-orb-ring"></div>
+                    <i class="fa-solid fa-brain"></i>
+                </div>
+                <div class="brand-text">
+                    <h1>NOVA <span>AI</span></h1>
+                    <small>by Lucky</small>
+                </div>
+            </div>
+
+            <!-- New Chat Button -->
+            <button class="new-chat-btn" id="newChatBtn">
+                <i class="fa-solid fa-plus"></i>
+                <span>New Chat</span>
+            </button>
+
+            <!-- Chat History -->
+            <div class="sidebar-section">
+                <div class="section-header">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <span>HISTORY</span>
+                </div>
+                <div class="history-list" id="historyList">
+                    <div class="empty-history">
+                        <i class="fa-solid fa-comment-slash"></i>
+                        <p>No chats yet</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Personas -->
+            <div class="sidebar-section">
+                <div class="section-header">
+                    <i class="fa-solid fa-robot"></i>
+                    <span>PERSONA</span>
+                </div>
+                <div class="persona-list" id="personaList">
+                    <button class="persona-item active" data-persona="general">
+                        <div class="persona-dot" style="background: #00d4ff;"></div>
+                        <span>Nova Assistant</span>
+                    </button>
+                    <button class="persona-item" data-persona="code">
+                        <div class="persona-dot" style="background: #7c3aed;"></div>
+                        <span>Code Architect</span>
+                    </button>
+                    <button class="persona-item" data-persona="productivity">
+                        <div class="persona-dot" style="background: #f59e0b;"></div>
+                        <span>Productivity Pro</span>
+                    </button>
+                    <button class="persona-item" data-persona="creative">
+                        <div class="persona-dot" style="background: #ec4899;"></div>
+                        <span>Creative Studio</span>
+                    </button>
+                    <button class="persona-item" data-persona="tutor">
+                        <div class="persona-dot" style="background: #10b981;"></div>
+                        <span>Polyglot Tutor</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Sidebar Footer: Settings -->
+            <div class="sidebar-footer">
+                <button class="sidebar-footer-btn" id="settingsBtn">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Settings</span>
+                </button>
+                <div class="sidebar-footer-btn creator-tag">
+                    <i class="fa-solid fa-heart"></i>
+                    <span>Made by Lucky</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Sidebar Toggle for Mobile -->
+        <button class="sidebar-toggle" id="sidebarToggle">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <!-- ===== MAIN CONTENT ===== -->
+        <main class="main-content">
+
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <div class="top-bar-left">
+                    <span class="active-persona-label" id="activePersonaLabel">
+                        <span class="status-dot"></span>
+                        Nova Assistant
+                    </span>
+                </div>
+                <div class="top-bar-right">
+                    <select id="engineSelect" class="engine-select">
+                        <option value="groq">⚡ Groq (Fast)</option>
+                        <option value="openai">🤖 OpenAI</option>
+                    </select>
+                    <div class="system-status">
+                        <span class="status-item"><i class="fa-solid fa-circle-check"></i> Online</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== JARVIS ORBS SECTION ===== -->
+            <div class="jarvis-section" id="jarvisSection">
+                <!-- Main Orb -->
+                <div class="jarvis-orb-wrapper" id="orbWrapper">
+                    <div class="jarvis-orb" id="jarvisOrb">
+                        <!-- Outer Rings -->
+                        <div class="orb-ring ring-1"></div>
+                        <div class="orb-ring ring-2"></div>
+                        <div class="orb-ring ring-3"></div>
+                        <div class="orb-ring ring-4"></div>
+                        <!-- Scanning Line -->
+                        <div class="orb-scan"></div>
+                        <!-- Inner Core -->
+                        <div class="orb-core">
+                            <div class="orb-core-inner">
+                                <i class="fa-solid fa-brain" id="orbIcon"></i>
+                            </div>
+                        </div>
+                        <!-- Dots orbiting -->
+                        <div class="orb-dot dot-1"></div>
+                        <div class="orb-dot dot-2"></div>
+                        <div class="orb-dot dot-3"></div>
+                    </div>
+
+                    <!-- Voice Visualizer (shows when listening) -->
+                    <div class="voice-visualizer" id="voiceVisualizer">
+                        <div class="wave-bar"></div>
+                        <div class="wave-bar"></div>
+                        <div class="wave-bar"></div>
+                        <div class="wave-bar"></div>
+                        <div class="wave-bar"></div>
+                        <div class="wave-bar"></div>
+                        <div class="wave-bar"></div>
+                        <div class="wave-bar"></div>
+                        <div class="wave-bar"></div>
+                    </div>
+
+                    <!-- Status Text -->
+                    <div class="orb-status-text" id="orbStatusText">
+                        Say something or type below...
+                    </div>
+                </div>
+
+                <!-- Voice Control Buttons -->
+                <div class="voice-controls" id="voiceControls">
+                    <button class="voice-btn mic-btn" id="micBtn" title="Start Voice Conversation">
+                        <i class="fa-solid fa-microphone"></i>
+                        <span>Hold to Speak</span>
+                    </button>
+                    <button class="voice-btn stop-btn hidden" id="stopBtn" title="Stop">
+                        <i class="fa-solid fa-stop"></i>
+                        <span>Stop</span>
+                    </button>
+                    <button class="voice-btn mute-btn" id="muteBtn" title="Mute/Unmute AI Voice">
+                        <i class="fa-solid fa-volume-high"></i>
+                        <span>AI Voice On</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ===== CHAT MESSAGES ===== -->
+            <div class="chat-section" id="chatSection">
+                <div class="chat-messages" id="chatMessages">
+                    <!-- Welcome Message -->
+                    <div class="welcome-msg">
+                        <h2>Hello, I'm <span>Nova AI</span> 👋</h2>
+                        <p>Your personal Jarvis-style AI assistant, crafted by <strong>Lucky</strong>.<br>Speak to me or type below to begin.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== INPUT AREA ===== -->
+            <div class="input-area">
+                <div class="input-box">
+                    <textarea
+                        id="chatInput"
+                        placeholder="Ask Nova anything... (Press Enter to send)"
+                        rows="1"
+                    ></textarea>
+                    <div class="input-actions">
+                        <button class="input-btn mic-inline-btn" id="micInlineBtn" title="Voice Input">
+                            <i class="fa-solid fa-microphone"></i>
+                        </button>
+                        <button class="input-btn send-btn" id="sendBtn">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+                <p class="input-hint">Nova AI • Made by Lucky • <span id="currentPersonaHint">Nova Assistant mode</span></p>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- ===== SETTINGS MODAL ===== -->
+    <div class="modal-overlay hidden" id="settingsModal">
+        <div class="modal-box settings-modal">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-gear"></i> Settings</h2>
+                <button class="modal-close" id="closeSettings"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <!-- Settings Tabs -->
+            <div class="settings-tabs">
+                <button class="tab-btn active" data-tab="account">
+                    <i class="fa-solid fa-user"></i> Account
+                </button>
+                <button class="tab-btn" data-tab="api">
+                    <i class="fa-solid fa-key"></i> API Keys
+                </button>
+                <button class="tab-btn" data-tab="voice">
+                    <i class="fa-solid fa-microphone"></i> Voice
+                </button>
+            </div>
+
+            <!-- Tab: Account / Login -->
+            <div class="tab-content active" id="tab-account">
+                <div class="logged-out-view" id="loggedOutView">
+                    <div class="auth-promo">
+                        <div class="auth-icon-big"><i class="fa-solid fa-user-astronaut"></i></div>
+                        <h3>Sign in to Nova AI</h3>
+                        <p>Save your chat history per account and sync your preferences</p>
+                    </div>
+                    <div class="auth-input-group">
+                        <input type="text" id="authDisplayName" placeholder="Your Display Name (e.g. Lucky)" maxlength="50">
+                        <input type="email" id="authEmail" placeholder="your@gmail.com">
+                        <button class="google-login-btn" id="loginBtn">
+                            <i class="fa-brands fa-google"></i> Sign in with Google
+                        </button>
+                    </div>
+                </div>
+                <div class="logged-in-view hidden" id="loggedInView">
+                    <div class="user-card-full">
+                        <div class="user-avatar-big" id="userAvatarBig">L</div>
+                        <div class="user-card-info">
+                            <h3 id="userNameDisplay">Lucky</h3>
+                            <span id="userEmailDisplay">lucky@gmail.com</span>
+                        </div>
+                    </div>
+                    <div class="account-stats">
+                        <div class="stat-item">
+                            <span class="stat-val" id="statChats">0</span>
+                            <span class="stat-label">Chats</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-val" id="statMessages">0</span>
+                            <span class="stat-label">Messages</span>
+                        </div>
+                    </div>
+                    <button class="logout-btn" id="logoutBtn">
+                        <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tab: API Keys -->
+            <div class="tab-content hidden" id="tab-api">
+                <div class="api-info-banner">
+                    <i class="fa-solid fa-circle-info"></i>
+                    Add your API key for real AI responses. Leave blank to use local engine.
+                </div>
+                <div class="api-group">
+                    <label><i class="fa-solid fa-bolt" style="color:#ff6b35"></i> Groq AI (Free & Fastest)</label>
+                    <div class="api-input-wrap">
+                        <input type="password" id="groqKey" placeholder="gsk_...">
+                        <button class="api-save-btn" data-provider="groq">Save</button>
+                    </div>
+                    <select id="groqModel" class="model-select">
+                        <option value="llama-3.3-70b-versatile">Llama 3.3 70B (Best)</option>
+                        <option value="llama-3.1-8b-instant">Llama 3.1 8B (Fast)</option>
+                        <option value="mixtral-8x7b-32768">Mixtral 8x7B</option>
+                        <option value="gemma2-9b-it">Gemma 2 9B</option>
+                    </select>
+                </div>
+                <div class="api-group">
+                    <label><i class="fa-brands fa-google" style="color:#4285f4"></i> Google Gemini</label>
+                    <div class="api-input-wrap">
+                        <input type="password" id="geminiKey" placeholder="AIza...">
+                        <button class="api-save-btn" data-provider="gemini">Save</button>
+                    </div>
+                </div>
+                <div class="api-group">
+                    <label><i class="fa-solid fa-robot" style="color:#10a37f"></i> OpenAI ChatGPT</label>
+                    <div class="api-input-wrap">
+                        <input type="password" id="openaiKey" placeholder="sk-...">
+                        <button class="api-save-btn" data-provider="openai">Save</button>
+                    </div>
+                </div>
+                <div class="api-group">
+                    <label><i class="fa-solid fa-network-wired" style="color:#a78bfa"></i> OpenRouter</label>
+                    <div class="api-input-wrap">
+                        <input type="password" id="openrouterKey" placeholder="sk-or-...">
+                        <button class="api-save-btn" data-provider="openrouter">Save</button>
+                    </div>
+                </div>
+                <div class="active-provider-display">
+                    Active Engine: <strong id="activeProviderText">Local Engine</strong>
+                </div>
+            </div>
+
+            <!-- Tab: Voice -->
+            <div class="tab-content hidden" id="tab-voice">
+                <div class="voice-setting-group">
+                    <label>AI Voice Speed</label>
+                    <input type="range" id="voiceSpeed" min="0.5" max="2" step="0.1" value="1">
+                    <span id="voiceSpeedVal">1x</span>
+                </div>
+                <div class="voice-setting-group">
+                    <label>AI Voice Pitch</label>
+                    <input type="range" id="voicePitch" min="0.5" max="2" step="0.1" value="1">
+                    <span id="voicePitchVal">1</span>
+                </div>
+                <div class="voice-setting-group">
+                    <label>Select Voice</label>
+                    <div style="display: flex; gap: 10px; flex: 1;">
+                        <select id="voiceSelect" class="model-select">
+                            <option>Loading voices...</option>
+                        </select>
+                        <button id="testVoiceBtn" class="api-save-btn" style="min-width: max-content;">Test Voice</button>
+                    </div>
+                </div>
+                <div class="voice-setting-group toggle-group">
+                    <label>Auto-read AI Responses</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="autoReadToggle" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="voice-setting-group toggle-group">
+                    <label>Continuous Conversation Mode</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="continuousVoiceToggle">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Overlay backdrop for sidebar on mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
